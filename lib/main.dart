@@ -1,5 +1,7 @@
-import 'package:firebase_auth_login_project/authPage.dart';
+import 'package:firebase_auth_login_project/data/join_or_login.dart';
+import 'package:firebase_auth_login_project/screens/login.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(MyApp());
@@ -8,9 +10,10 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
-      home: AuthPage(),
+      home: ChangeNotifierProvider<JoinOrLogin>.value(
+          value: JoinOrLogin(),
+          child: AuthPage()),
     );
   }
 }

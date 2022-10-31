@@ -1,5 +1,7 @@
+import 'package:firebase_auth_login_project/data/join_or_login.dart';
 import 'package:firebase_auth_login_project/helper/login_background.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AuthPage extends StatelessWidget {
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
@@ -16,7 +18,8 @@ class AuthPage extends StatelessWidget {
         children: [
           CustomPaint(
             size: size,
-            painter: LoginBackground(),
+            painter: LoginBackground(
+                isJoin: Provider.of<JoinOrLogin>(context).isJoin),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -28,33 +31,46 @@ class AuthPage extends StatelessWidget {
                   _inputForm(size),
                   _authBUtton(size),
                 ],
-              )
+              ),
+              Container(
+                height: size.height * 0.1,
+              ),
+              Consumer<JoinOrLogin>(
+                builder: (context, joinOrLogin, child) => GestureDetector(
+                  onTap: () {
+                    joinOrLogin.toggle();
+                  },
+                  child: Text(
+                      joinOrLogin.isJoin
+                          ? "Already have an Account? Join in"
+                          : "Don't have an Account? Create One",
+                      style: TextStyle(
+                        color: joinOrLogin.isJoin ? Colors.red : Colors.blue,
+                      )),
+                ),
+              ),
+              Container(
+                height: size.height * 0.05,
+              ),
             ],
           ),
-          // Container(
-          //   color: Colors.brown,
-          // ),
-          // Container(
-          //   width: 100,
-          //   height: 100,
-          //   color: Colors.blue,
-          // )
         ],
       ),
     );
   }
 
   Widget get _logoImage => Expanded(
-    child: Padding(
-      padding: const EdgeInsets.only(top: 40, left: 24, right: 24),
-      child: FittedBox(
-        fit: BoxFit.contain,
-        child: CircleAvatar(
-          backgroundImage: NetworkImage("https://picsum.photos/200"),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 40, left: 24, right: 24),
+          child: FittedBox(
+            fit: BoxFit.contain,
+            child: CircleAvatar(
+              // backgroundImage: AssetImage("assets/login.gif"),
+              backgroundImage: NetworkImage("https://picsum.photos/200"),
+            ),
+          ),
         ),
-      ),
-    ),
-  );
+      );
 
   /**
    * button
@@ -65,13 +81,17 @@ class AuthPage extends StatelessWidget {
       bottom: 0,
       child: SizedBox(
           height: 50,
-          child: ElevatedButton(
-              child: Text('Login'),
-              onPressed: () {
-                if (_globalKey.currentState!.validate()) {
-                  print(_emailController.text.toString());
-                }
-              })));
+          child: Consumer<JoinOrLogin>(
+            builder: (context, value, child) => ElevatedButton(
+                child: Text(value.isJoin ? "Join" : "Login"),
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: value.isJoin ? Colors.red : Colors.blue),
+                onPressed: () {
+                  if (_globalKey.currentState!.validate()) {
+                    print(_emailController.text.toString());
+                  }
+                }),
+          )));
 
   /**
    * input form
@@ -84,7 +104,7 @@ class AuthPage extends StatelessWidget {
         elevation: 6,
         child: Padding(
           padding:
-          const EdgeInsets.only(left: 12.0, right: 12, top: 12, bottom: 32),
+              const EdgeInsets.only(left: 12.0, right: 12, top: 12, bottom: 32),
           child: Form(
               key: _globalKey,
               child: Column(
@@ -116,7 +136,10 @@ class AuthPage extends StatelessWidget {
                   Container(
                     height: 8,
                   ),
-                  Text('Forget Password'),
+                  Consumer<JoinOrLogin>(
+                      builder: (context, value, child) => Opacity(
+                          opacity: value.isJoin ? 0 : 1,
+                          child: Text('Forget Password'))),
                 ],
               )),
         ),

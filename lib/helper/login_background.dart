@@ -1,9 +1,14 @@
+import 'package:firebase_auth_login_project/data/join_or_login.dart';
 import 'package:flutter/material.dart';
 
 class LoginBackground extends CustomPainter{
+  LoginBackground({required this.isJoin});
+  final bool isJoin;
+
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()..color = Colors.blue;
+    print(isJoin);
+    Paint paint = Paint()..color = isJoin?Colors.red:Colors.blue;
     canvas.drawCircle(Offset(size.width*0.5, size.height*0.2), size.height *0.5, paint);
   }
 
