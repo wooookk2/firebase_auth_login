@@ -1,10 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth_login_project/data/join_or_login.dart';
 import 'package:firebase_auth_login_project/helper/login_background.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AuthPage extends StatelessWidget {
-  final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -59,6 +60,43 @@ class AuthPage extends StatelessWidget {
     );
   }
 
+  /**
+   * 계정 생성
+   */
+  void _register(BuildContext context) async {
+    final UserCredential result = await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(
+            email: _emailController.text, password: _passwordController.text);
+    final User? user = result.user;
+
+    if (user == null) {
+      final snacBar = SnackBar(
+        content: Text('Please try again later.'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snacBar);
+    }
+  }
+
+  /**
+   * 로그인
+   */
+  void _login(BuildContext context) async {
+    final UserCredential result = await FirebaseAuth.instance
+        .signInWithEmailAndPassword(
+            email: _emailController.text, password: _passwordController.text);
+    final User? user = result.user;
+
+    if (user == null) {
+      final snacBar = SnackBar(
+        content: Text('Please try again later.'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snacBar);
+    }
+  }
+
+  /**
+   * logo image
+   */
   Widget get _logoImage => Expanded(
         child: Padding(
           padding: const EdgeInsets.only(top: 40, left: 24, right: 24),
@@ -82,13 +120,14 @@ class AuthPage extends StatelessWidget {
       child: SizedBox(
           height: 50,
           child: Consumer<JoinOrLogin>(
-            builder: (context, value, child) => ElevatedButton(
-                child: Text(value.isJoin ? "Join" : "Login"),
+            builder: (context, joinOrLogin, child) => ElevatedButton(
+                child: Text(joinOrLogin.isJoin ? "Join" : "Login"),
                 style: ElevatedButton.styleFrom(
-                    backgroundColor: value.isJoin ? Colors.red : Colors.blue),
+                    backgroundColor:
+                        joinOrLogin.isJoin ? Colors.red : Colors.blue),
                 onPressed: () {
-                  if (_globalKey.currentState!.validate()) {
-                    print(_emailController.text.toString());
+                  if (_formKey.currentState!.validate()) {
+                    joinOrLogin.isJoin ? _register(context) : _login(context);
                   }
                 }),
           )));
@@ -106,7 +145,7 @@ class AuthPage extends StatelessWidget {
           padding:
               const EdgeInsets.only(left: 12.0, right: 12, top: 12, bottom: 32),
           child: Form(
-              key: _globalKey,
+              key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
