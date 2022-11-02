@@ -1,11 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth_login_project/data/join_or_login.dart';
 import 'package:firebase_auth_login_project/helper/login_background.dart';
+import 'package:firebase_auth_login_project/screens/forget_pw.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AuthPage extends StatelessWidget {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -178,11 +179,18 @@ class AuthPage extends StatelessWidget {
                   Consumer<JoinOrLogin>(
                       builder: (context, value, child) => Opacity(
                           opacity: value.isJoin ? 0 : 1,
-                          child: Text('Forget Password'))),
+                          child: GestureDetector(
+                              onTap: value.isJoin? null: () {goToForgetPw(context);},
+                              child: Text('Forget Password')))),
                 ],
               )),
         ),
       ),
     );
+  }
+
+  goToForgetPw(BuildContext context) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => ForgetPw()));
   }
 }
