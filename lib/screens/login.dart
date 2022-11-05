@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_auth_login_project/data/join_or_login.dart';
 import 'package:firebase_auth_login_project/helper/login_background.dart';
+import 'package:firebase_auth_login_project/providers/join_or_login.dart';
 import 'package:firebase_auth_login_project/screens/forget_pw.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

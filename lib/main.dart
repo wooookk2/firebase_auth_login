@@ -1,10 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_auth_login_project/data/join_or_login.dart';
+import 'package:firebase_auth_login_project/providers/join_or_login.dart';
 import 'package:firebase_auth_login_project/screens/login.dart';
 import 'package:firebase_auth_login_project/screens/main_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/date_symbol_data_file.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
