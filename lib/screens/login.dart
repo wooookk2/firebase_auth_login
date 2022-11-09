@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_auth_login_project/helper/login_background.dart';
 import 'package:firebase_auth_login_project/providers/join_or_login.dart';
+import 'package:firebase_auth_login_project/helper/login_background.dart';
 import 'package:firebase_auth_login_project/screens/forget_pw.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -156,7 +156,7 @@ class AuthPage extends StatelessWidget {
                         icon: Icon(Icons.account_circle), labelText: "Email"),
                     validator: (String? value) {
                       if (value!.isEmpty) {
-                        return "Pease input correct Email.";
+                        return "Please input correct Email.";
                       }
                       return null;
                     },
@@ -168,7 +168,7 @@ class AuthPage extends StatelessWidget {
                         icon: Icon(Icons.vpn_key), labelText: "Password"),
                     validator: (String? value) {
                       if (value!.isEmpty) {
-                        return "Pease input correct Password.";
+                        return "Please input correct Password.";
                       }
                       return null;
                     },
